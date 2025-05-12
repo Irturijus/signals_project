@@ -12,7 +12,7 @@ def display_brightness(brightness, samplerate, decay_rate=5000):
     current_bar_length = 0.0
 
     for i, target_value in enumerate(brightness):
-        target_value_int = max(0, int(target_value*10))  # Ensure non-negative
+        target_value_int = max(0, int(target_value*0.1))  # Ensure non-negative
 
         target_value_int
 
