@@ -1,0 +1,47 @@
+{
+    "version":"3.3.0",
+    "bpmEvents":[
+
+    ],
+    "rotationEvents":[
+        
+    ],
+    "colorNotes":[
+        
+    ],
+    "bombNotes":[
+        
+    ],
+    "obstacles":[
+        
+    ],
+    "sliders":[
+        
+    ],
+    "burstSliders":[
+
+    ],
+    "waypoints":[
+        
+    ],
+    "basicBeatmapEvents":[
+        
+    ],
+    "colorBoostBeatmapEvents":[
+        
+    ],
+    "lightColorEventBoxGroups":[
+    
+    ],
+    "_fxEventsCollection":{
+        "_il":[
+            
+        ],
+        "_fl":[
+
+        ]
+    },
+    "useNormalEventsAsCompatibleEvents":true,
+    "customData":{
+    }
+}
