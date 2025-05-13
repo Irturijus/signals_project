@@ -179,3 +179,11 @@ def load_audio_ffmpeg(file_path):
     audio = np.frombuffer(out.stdout, dtype=np.float32)
     audio = audio.reshape(-1, 2)
     return audio, sr
+
+def strip_array(arr: np.ndarray) -> np.ndarray:
+    nonzero_indices = np.nonzero(arr)[0]
+
+    if nonzero_indices.size > 0:
+        stripped = arr[nonzero_indices[0] : nonzero_indices[-1] + 1]
+    else:
+        stripped = np.array([])

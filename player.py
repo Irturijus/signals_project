@@ -22,5 +22,5 @@ end = beat_data["song_end_time"]
 audio, samplerate = load_audio_ffmpeg(f"process_song/{ogg_file_name}")
 
 sd.play(audio[samplerate*start:samplerate*end]*0.4, samplerate)
-display_brightness(beats_array, beat_samplerate, 50)
+display_brightness_threshold(beats_array, beat_samplerate, 10, 40)
 sd.stop()

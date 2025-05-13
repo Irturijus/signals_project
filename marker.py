@@ -11,7 +11,7 @@ import json
 
 def find_beats(mono_audio: np.ndarray, samplerate: float, beat_samplerate) -> np.ndarray:
     window_size = int(samplerate*0.05)
-    n_fft = int(window_size*0.25)
+    n_fft = int(window_size*1)
     grouping_time = 1/8
 
     audio_RMS = np.sqrt(np.mean(np.square(mono_audio)))
@@ -34,7 +34,7 @@ def find_beats(mono_audio: np.ndarray, samplerate: float, beat_samplerate) -> np
         frame = padded_audio[i-window_size:i] * window
         magnitudes = np.abs(fft(frame, n_fft))[:n_fft // 2]
 
-        weighted_magnitudes[i-window_size] = magnitudes * 1
+        weighted_magnitudes[i-window_size] = magnitudes * log_weights
 
         if i % (samplerate//2) == 0:
             time = (i-window_size)/samplerate
@@ -55,10 +55,10 @@ def find_beats(mono_audio: np.ndarray, samplerate: float, beat_samplerate) -> np
 
     resampled_flux = resample_poly(spectral_flux, up, down)
 
-    smoothed_flux = median_filter(resampled_flux, size=int(samplerate * 1 / (samplerate / beat_samplerate)))
-    smoothed_flux_2 = median_filter(resampled_flux, size=int(samplerate * 0.02 / (samplerate / beat_samplerate)))
+    smoothed_flux = median_filter(resampled_flux, size=int(samplerate * 5 / (samplerate / beat_samplerate)))
+    smoothed_flux_2 = median_filter(resampled_flux, size=int(samplerate * 0.05 / (samplerate / beat_samplerate)))
 
-    threshold = 0.2
+    threshold = 2
     onsets = np.maximum(0, smoothed_flux_2-smoothed_flux-threshold, dtype=float)
 
     grouping_samples = int(grouping_time*beat_samplerate)
@@ -87,7 +87,7 @@ audio_mono = np.mean(audio, axis=1)
 
 beat_samplerate = 100
 song_start_time = 0
-song_end_time = 10
+song_end_time = 10 # set to -1 for (almost) full duration
 
 beats_array = find_beats(audio_mono[samplerate*song_start_time:samplerate*song_end_time], samplerate, beat_samplerate)
 
@@ -102,5 +102,5 @@ beat_data = {
     "ogg_file_name": ogg_file_name
 }
 
-with open("process_song/beats_array2.json", "w") as f:
+with open("process_song/beats_array.json", "w") as f:
     f.write(json.dumps(beat_data, indent=4))
