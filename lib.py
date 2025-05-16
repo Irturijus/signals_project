@@ -5,6 +5,10 @@ import numpy as np
 import random
 
 def display_brightness(brightness, samplerate, decay_rate=5000):
+    #visualizes the beats array as a bar in the console that updates in place without
+    #scrolling, where the size of the bar represents how much of a beat there is
+    #this function will not be in the final version of the project, it is just for testing
+
     frame_duration = 1.0 / samplerate
     start_time = time.perf_counter()
 
@@ -13,8 +17,6 @@ def display_brightness(brightness, samplerate, decay_rate=5000):
 
     for i, target_value in enumerate(brightness):
         target_value_int = max(0, int(target_value*0.1))  # Ensure non-negative
-
-        target_value_int
 
         if current_bar_length > target_value_int:
             decay_factor = 1 - decay_rate * frame_duration
@@ -35,10 +37,11 @@ def display_brightness(brightness, samplerate, decay_rate=5000):
 
     print("\nDone.")
 
-def display_brightness_stack(
-    brightness, samplerate, threshold=0.5,
-    max_bars=10
-):
+def display_brightness_stack(brightness, samplerate, threshold=0.5, max_bars=10):
+    #visualizes the beats array as a vertically scrolling "screen" of bars, where the
+    #size of the bars represent how much of a beat there is
+    #this function will not be in the final version of the project, it is just for testing
+
     frame_duration = 1.0 / samplerate
     start_time = time.perf_counter()
 
@@ -103,6 +106,10 @@ def display_brightness_stack(
 
 
 def display_brightness_threshold(brightness, samplerate, threshold, decay_rate=40):
+    #visualizes the beats array as 10 bars that light up randomly when the beat strength in the beats
+    #array exceeds the threshold.
+    #this function will not be in the final version of the project, it is just for testing
+
     frame_duration = 1.0 / samplerate
     start_time = time.perf_counter()
 
@@ -153,7 +160,7 @@ def display_brightness_threshold(brightness, samplerate, threshold, decay_rate=4
     print("\nDone.")
 
 
-def get_audio_samplerate(file_path):
+def get_audio_samplerate(file_path): #by chatGPT
     cmd = [
         "ffprobe", "-v", "error",
         "-select_streams", "a:0",
@@ -164,7 +171,7 @@ def get_audio_samplerate(file_path):
     result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
     return int(result.stdout.decode().strip())
 
-def load_audio_ffmpeg(file_path):
+def load_audio_ffmpeg(file_path): #by chatGPT
     sr = get_audio_samplerate(file_path)
 
     cmd = [
@@ -180,7 +187,9 @@ def load_audio_ffmpeg(file_path):
     audio = audio.reshape(-1, 2)
     return audio, sr
 
-def strip_array(arr: np.ndarray) -> np.ndarray:
+def strip_array(arr: np.ndarray) -> np.ndarray: #by chatGPT,
+    # this function removes the leading and trailing zeros of a numpy array,
+    # making it shorter. It returns the stripped array.
     nonzero_indices = np.nonzero(arr)[0]
 
     if nonzero_indices.size > 0:
