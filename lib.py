@@ -37,7 +37,7 @@ def display_brightness(brightness, samplerate, decay_rate=5000):
 
     print("\nDone.")
 
-def display_brightness_stack(brightness, samplerate, threshold=0.5, max_bars=10):
+def display_brightness_stack(brightness, samplerate, threshold=0.5, max_bars=10, gain = 0.001):
     #visualizes the beats array as a vertically scrolling "screen" of bars, where the
     #size of the bars represent how much of a beat there is
     #this function will not be in the final version of the project, it is just for testing
@@ -66,7 +66,7 @@ def display_brightness_stack(brightness, samplerate, threshold=0.5, max_bars=10)
     for i, value in enumerate(brightness):
         # Add new bar if threshold exceeded
         if value > threshold:
-            length = (value - threshold) * MAX_LENGTH * 0.01
+            length = (value - threshold) * MAX_LENGTH * gain
         else:
             length = 0
         
