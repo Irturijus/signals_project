@@ -2,7 +2,108 @@ import sys
 import time
 import subprocess
 import numpy as np
-import random
+import numpy as np
+from numpy.fft import rfft
+import matplotlib.pyplot as plt
+from scipy.ndimage import uniform_filter1d
+
+def group_beats(beat_array, grouping_samples=None):
+
+    for i in range(beat_array.shape[0]):
+        if beat_array[i] > 0:
+            if grouping_samples != None:
+                j = i+grouping_samples
+            else:
+                j = i
+                while j < beat_array.shape[0] and np.sum(beat_array[j:j+5]) > 0:
+                    j += 1
+                j += 1
+            sum = np.sum(beat_array[i:j])
+            beat_array[i:j] = 0
+            beat_array[i] = sum
+
+def find_beats_mono(mono_audio: np.ndarray, samplerate: float, beat_samplerate) -> np.ndarray:
+    # This function takes an audio signal in the time domain and its sample rate
+    # and then finds beats in the song, "marking" them in another array of zeros,
+    # effectively creating another time-domain signal, of which the sample rate is beat_samplerate
+
+    total_time = mono_audio.shape[0]/samplerate
+    audio_RMS = np.sqrt(np.mean(np.square(mono_audio))) #computes the Root-Mean-square value of the audio signal to determine how loud it is on average
+
+    beat_array_num_samples = int(total_time*beat_samplerate)
+    
+    beat_array = np.zeros((beat_array_num_samples,), dtype=float)
+
+    audio_sample_size = int(samplerate/beat_samplerate)
+    resolution = 16
+    fft_sample_size = audio_sample_size * resolution
+
+    frequencies = np.fft.rfftfreq(fft_sample_size, d=1.0/samplerate)[1:]
+
+    prev_rfft_magnitude = np.zeros((fft_sample_size // 2,))
+
+    rates_of_change = np.zeros((beat_array_num_samples, fft_sample_size // 2))
+    
+    window = np.hamming(audio_sample_size)
+
+    for i in range(beat_array_num_samples-1):
+        sample_start = audio_sample_size*i
+        sample_end = audio_sample_size*(i+1)
+        
+        audio_sample = mono_audio[sample_start:sample_end] * window * (1/audio_RMS)
+
+        padded_sample = np.pad(audio_sample, (0, fft_sample_size - audio_sample_size), mode='constant', constant_values=0)
+
+        rfft_magnitude = np.abs(rfft(padded_sample)[1:])
+        rfft_magnitude_change = rfft_magnitude - prev_rfft_magnitude
+        prev_rfft_magnitude = rfft_magnitude * 1.0
+
+        time_change = 1.0/beat_samplerate
+
+        rates_of_change[i] = rfft_magnitude_change/time_change
+
+    IS_constant = 30
+    filter_size = 0.5 # [s]
+    IS_factor = 1.5
+
+    positive_rates_of_change = np.maximum(0, rates_of_change-IS_constant)
+
+    mean_positive_r_o_c = np.mean(positive_rates_of_change, axis=1)
+
+    insensitivity = uniform_filter1d(mean_positive_r_o_c, size=int(beat_samplerate*filter_size))*IS_factor
+
+    beat_array = mean_positive_r_o_c - insensitivity
+    beat_array = np.maximum(0, beat_array)
+
+    return beat_array, np.mean(positive_rates_of_change)
+
+def find_beats(audio, samplerate, beat_samplerate):
+    # Finds the beats in a stereo sound signal and retruns them
+    # in a 1D numpy array, sampled at beat_samplerate.
+    #
+    # Parameters:
+    #   audio: the stereo audio signal
+    #   samplerate: the sampling rate in samples/s of the audio signal
+    #   beat_samplerate: the desired sampling rate of the beats array
+
+    sufficient_strength_threshold = 0.5
+
+    audio_ch1 = audio[:, 0]
+    audio_ch2 = audio[:, 1]
+
+    beats_array_ch1, mean_beat_strength_ch1 = find_beats_mono(audio_ch1, samplerate, beat_samplerate)
+    beats_array_ch2, mean_beat_strength_ch2 = find_beats_mono(audio_ch2, samplerate, beat_samplerate)
+
+    beats_array = beats_array_ch1 + beats_array_ch2
+    mean_beat_strength = mean_beat_strength_ch1 * 0.5 + mean_beat_strength_ch2 * 0.5
+
+    group_beats(beats_array)
+
+    sufficient_strength_mask = beats_array > sufficient_strength_threshold*mean_beat_strength
+
+    beats_array = beats_array * sufficient_strength_mask
+
+    return beats_array
 
 def display_brightness(brightness, samplerate, decay_rate=5000):
     #visualizes the beats array as a bar in the console that updates in place without
@@ -99,11 +200,6 @@ def display_brightness_stack(brightness, samplerate, threshold=0.5, max_bars=10,
             time.sleep(sleep_time)
 
     print("Done.")
-
-
-
-
-
 
 def display_brightness_threshold(brightness, samplerate, threshold, decay_rate=40):
     #visualizes the beats array as 10 bars that light up randomly when the beat strength in the beats

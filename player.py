@@ -1,5 +1,3 @@
-import os
-import scipy
 import numpy as np
 from numpy.fft import fft
 import matplotlib.pyplot as plt
@@ -19,5 +17,5 @@ beat_samplerate = beat_data["beat_samplerate"]
 audio, samplerate = load_audio_ffmpeg(f"process_song/{ogg_file_name}") # load the song that the beat data belongs to
 
 sd.play(audio*0.4, samplerate) # start playing the song (non-blocking)
-display_brightness_stack(beats_array, beat_samplerate, 0, 20) # start visualizing the beats signal (blocking)
+display_brightness_threshold(beats_array, beat_samplerate, 0, 20) # start visualizing the beats signal (blocking)
 sd.stop() # stop playing the song after the data has been visualized
