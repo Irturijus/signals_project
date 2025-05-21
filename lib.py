@@ -63,7 +63,7 @@ def find_beats_mono(mono_audio: np.ndarray, samplerate: float, beat_samplerate) 
         rates_of_change[i] = rfft_magnitude_change/time_change
 
     IS_constant = 30
-    filter_size = 0.5 # [s]
+    filter_size = 1 # [s]
     IS_factor = 1.5
 
     positive_rates_of_change = np.maximum(0, rates_of_change-IS_constant)
