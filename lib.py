@@ -8,6 +8,16 @@ import matplotlib.pyplot as plt
 from scipy.ndimage import uniform_filter1d
 
 def group_beats(beat_array, grouping_samples=None):
+    # groups all instances of adjacent beats in beats_array together into single beats.
+    # beat_array is modified.
+    #
+    # Parameters:
+    #   beat_array: the array where the beats are stored
+    #
+    #   grouping_samples: if provided, every beat is grouped with anything
+    #                     grouping_samples samples in front of it. Othewise,
+    #                     the beat is groped with all beats in front of it until
+    #                     a zero sample (sample without a beat).
 
     for i in range(beat_array.shape[0]):
         if beat_array[i] > 0:
@@ -24,8 +34,14 @@ def group_beats(beat_array, grouping_samples=None):
 
 def find_beats_mono(mono_audio: np.ndarray, samplerate: float, beat_samplerate) -> np.ndarray:
     # This function takes an audio signal in the time domain and its sample rate
-    # and then finds beats in the song, "marking" them in another array of zeros,
-    # effectively creating another time-domain signal, of which the sample rate is beat_samplerate
+    # and then finds beats in the song using the total positive frequency spectrum change as an
+    # indicator, "marking" them in another array of zeros, effectively creating another 
+    # time-domain signal, of which the sample rate is beat_samplerate.
+    #
+    # Parameters:
+    #   mono_audio: the single-channel audio signal
+    #   samplerate: the sampling rate in samples/s of the audio signal
+    #   beat_samplerate: the desired sampling rate of the beats array
 
     total_time = mono_audio.shape[0]/samplerate
     audio_RMS = np.sqrt(np.mean(np.square(mono_audio))) #computes the Root-Mean-square value of the audio signal to determine how loud it is on average
@@ -78,15 +94,18 @@ def find_beats_mono(mono_audio: np.ndarray, samplerate: float, beat_samplerate) 
     return beat_array, np.mean(positive_rates_of_change)
 
 def find_beats(audio, samplerate, beat_samplerate):
-    # Finds the beats in a stereo sound signal and retruns them
-    # in a 1D numpy array, sampled at beat_samplerate.
+    # This function takes a stereo audio (song) signal in the time domain and its sample rate
+    # and then finds beats in the song, "marking" them in another array of zeros,
+    # effectively creating another time-domain signal, of which the sample rate is beat_samplerate.
+    # This function calls find_beats_mono for both channels separately and takes the mean of the outputs.
+    # It then groups the beats, and removes negligible beats after that.
     #
     # Parameters:
     #   audio: the stereo audio signal
     #   samplerate: the sampling rate in samples/s of the audio signal
     #   beat_samplerate: the desired sampling rate of the beats array
 
-    sufficient_strength_threshold = 0.5
+    sufficient_strength_threshold = 0.3
 
     audio_ch1 = audio[:, 0]
     audio_ch2 = audio[:, 1]
