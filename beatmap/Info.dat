@@ -1,0 +1,24 @@
+{
+  "version": "4.0.0",
+  "song": {
+    "title": "Unknown Song",
+    "author": "Unknown Author"
+  },
+  "audio": {
+    "bpm": 326.0,
+    "songFilename": "onsight.ogg"
+  },
+  "coverImageFilename": "cover.png",
+  "_environmentName": "DefaultEnvironment",
+  "_allDirectionsEnvironmentName": "GlassDesertEnvironment",
+  "difficultyBeatmaps": [
+    {
+      "difficulty": "Easy",
+      "difficultyRank": 1,
+      "beatmapDataFilename": "Easy.dat",
+      "noteJumpMovementSpeed": 10,
+      "noteJumpStartBeatOffset": 0,
+      "colorSchemeId": "Default"
+    }
+  ]
+}
