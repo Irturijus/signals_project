@@ -1,7 +1,6 @@
 import os
 import shutil
 import webbrowser
-import time
 
 print('To check the result, a browser window will have to be opened')
 
