@@ -3,6 +3,8 @@ import shutil
 import webbrowser
 import time
 
+print('To check the result, a browser window will have to be opened')
+
 if os.path.exists('process_song/beats_array.json'):
     os.remove('process_song/beats_array.json')
 
@@ -16,11 +18,4 @@ import marker
 import convert_to_dat
 import zipping
 
-user_input = input('To check the result, a browser window will have to be opened. Do you agree (Y/N): ') 
-
-if user_input == 'Y':
-    print('When the website opens, press the folder icon on the website and select "beatmap.zip" as the input file, it is in the main directory.')
-    time.sleep(5)
-    webbrowser.open("https://allpoland.github.io/ArcViewer/")
-else:
-    print('To check the result, please search up arcviewer beat saber in your search engine of choice.')
+webbrowser.open("https://allpoland.github.io/ArcViewer/")
