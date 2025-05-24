@@ -3,6 +3,9 @@ import json
 import random
 import shutil
 
+if os.path.exists('beatmap'):
+    shutil.rmtree('beatmap')
+
 with open('process_song/beats_array.json', 'r') as file:
     data = json.load(file)
 
@@ -48,13 +51,47 @@ def generate_info():
                 'noteJumpStartBeatOffset': 0,
                 'colorSchemeId': 'Default'
             },
+            {
+                'difficulty': 'Normal',
+                'difficultyRank': 3,
+                'beatmapDataFilename': 'Normal.dat',
+                'noteJumpMovementSpeed': 10,
+                'noteJumpStartBeatOffset': 0,
+                'colorSchemeId': 'Default'
+            },
+            {
+                'difficulty': 'Hard',
+                'difficultyRank': 5,
+                'beatmapDataFilename': 'Hard.dat',
+                'noteJumpMovementSpeed': 10,
+                'noteJumpStartBeatOffset': 0,
+                'colorSchemeId': 'Default'
+            },
+            {
+                'difficulty': 'Expert',
+                'difficultyRank': 7,
+                'beatmapDataFilename': 'Expert.dat',
+                'noteJumpMovementSpeed': 10,
+                'noteJumpStartBeatOffset': 0,
+                'colorSchemeId': 'Default'
+            },
+            {
+                'difficulty': 'Expert+',
+                'difficultyRank': 9,
+                'beatmapDataFilename': 'Expertplus.dat',
+                'noteJumpMovementSpeed': 10,
+                'noteJumpStartBeatOffset': 0,
+                'colorSchemeId': 'Default'
+            },
         ],
     }
 
     return info
 
 
-def generate_easy():
+
+def generate_easy(difficulty):
+    
     color_notes = []
 
     max_val = max(beats)
@@ -76,9 +113,9 @@ def generate_easy():
         beat = seconds_to_beat(second)
 
         # Stack generator
-        if val > 0.75 * max_val:
+        if val > (0.75-(difficulty-1)*0.01) * max_val:
             note_count = 3
-        elif val > 0.5 * max_val:
+        elif val > (0.5-(difficulty-1)*0.01) * max_val:
             note_count = 2
         else:
             note_count = 1
@@ -176,10 +213,40 @@ def export_map():
         json.dump(info_data, f, indent=2)
 
     # Easy.dat
-    easy_data = generate_easy()
+    easy_data = generate_easy(1)
     with open(os.path.join(output_folder, 'Easy.dat'), 'w') as f:
         json.dump(easy_data, f, indent=2)
+
+    easy_data == 0
+
+    # normal_data = generate_easy(3)
+    # with open(os.path.join(output_folder, 'Normal.dat'), 'w') as f:
+    #     json.dump(normal_data, f, indent=2)
+
+    # normal_data == 0
+
+    # hard_data = generate_easy(5)
+    # with open(os.path.join(output_folder, 'Hard.dat'), 'w') as f:
+    #     json.dump(hard_data , f, indent=2)
+
+    # hard_data == 0
+
+    # expert_data = generate_easy(7)
+    # with open(os.path.join(output_folder, 'Expert.dat'), 'w') as f:
+    #     json.dump(expert_data, f, indent=2)
+
+    # expert_data == 0
+
+    # expertp_data = generate_easy(9)
+    # with open(os.path.join(output_folder, 'Expertplus.dat'), 'w') as f:
+    #     json.dump(expertp_data, f, indent=2)
+
+    # expertp_data == 0
 
     print(f'Exported!')
 
 export_map()
+
+shutil.make_archive('beatmap', 'zip', 'beatmap')
+
+shutil.rmtree('beatmap')
