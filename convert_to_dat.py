@@ -92,7 +92,7 @@ def generate_easy():
                 dir_status['Y'] = False
             else:
                 direction = random.choice([0, 1, 8])
-                if direction is not 8:
+                if direction != 8:
                     dir_status['Y'] = True
         else:
             if dir_status['X']:
