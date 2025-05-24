@@ -85,7 +85,7 @@ def generate_easy():
 
         # Direction generator, a huge mess to implement logic
         direction = 8
-        if note_count == 3:  # Separate case for 3 notes to be only up down or any
+        if note_count in [2, 3]:  # Separate case for 3 notes to be only up down or any
             if dir_status['Y']:
                 track_dir['Y'] = not track_dir['Y']
                 direction = 0 if track_dir['Y'] else 1
@@ -115,10 +115,16 @@ def generate_easy():
                         dir_status['Y'] = True
                         track_dir['Y'] = (direction == 0)
 
+        x = random.randint(0, 3)
+        if x == 0:
+            color = 0
+        elif x == 3:
+            color = 1
+        else:
+            color = random.randint(0, 1)
+
         for _ in range(note_count):
             while True:  # Generate positions that aren't same as last
-                x = random.randint(0, 3)
-                color = 0 if x < 2 else 1
                 available_y = {0, 1, 2}
 
                 if not available_y:
