@@ -22,12 +22,13 @@ beats_array, tempo = find_beats_and_tempo(audio, samplerate, beat_samplerate) # 
 beats_array = np.maximum(0, beats_array-0.10*np.max(beats_array)) #simple post processing (temporary)
 
 plt.plot(beats_array)
-plt.show()
+# plt.show()
 
 beat_data = {
     "beats": list(beats_array),
     "beat_samplerate": beat_samplerate,
-    "ogg_file_name": ogg_file_name
+    "ogg_file_name": ogg_file_name,
+    "tempo": int(round(tempo))
 } # put the beat data of this song into a dictionary
  
 with open("process_song/beats_array.json", "w") as f:

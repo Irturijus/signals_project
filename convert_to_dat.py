@@ -9,13 +9,13 @@ with open('process_song/beats_array.json', 'r') as file:
 beats = data['beats']
 samplerate = data["beat_samplerate"]
 songFilename = data['ogg_file_name']
+bpm = data['tempo']
 name = 'Unknown Song'
 author = 'Unknown Author'
 output_folder = 'beatmap'
 
 duration = len(beats) / samplerate
 total_beats = sum(1 for i in beats if i > 0)
-bpm = 60 * (total_beats / duration)
 print(
     f'Samplerate: {samplerate},\n Duration: {duration}, \n Total beats: {total_beats}, \n BPM: {bpm}')
 
