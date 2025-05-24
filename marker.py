@@ -17,7 +17,9 @@ audio, samplerate = load_audio_ffmpeg(f"process_song/{ogg_file_name}") # load th
 
 beat_samplerate = 100 # [samples/s]
 
-beats_array = find_beats(audio, samplerate, beat_samplerate) # find the beats
+beats_array, tempo = find_beats_and_tempo(audio, samplerate, beat_samplerate) # find the beats
+
+beats_array = np.maximum(0, beats_array-0.10*np.max(beats_array)) #simple post processing (temporary)
 
 plt.plot(beats_array)
 plt.show()
