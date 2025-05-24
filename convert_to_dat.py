@@ -166,6 +166,9 @@ def generate_easy():
 
 def export_map():
     os.makedirs(output_folder, exist_ok=True)
+    src = 'process_song/' + songFilename
+    dst = 'beatmap/' + songFilename
+    shutil.copy(src, dst)
 
     # Info.dat
     info_data = generate_info()
@@ -178,10 +181,5 @@ def export_map():
         json.dump(easy_data, f, indent=2)
 
     print(f'Exported!')
-
-
-src = 'process_song/' + songFilename
-dst = 'beatmap/' + songFilename
-shutil.copy(src, dst)
 
 export_map()

@@ -5,8 +5,8 @@
     "author": "Unknown Author"
   },
   "audio": {
-    "bpm": 326.0,
-    "songFilename": "onsight.ogg"
+    "bpm": 252.14285714285717,
+    "songFilename": "song7.ogg"
   },
   "coverImageFilename": "cover.png",
   "_environmentName": "DefaultEnvironment",
