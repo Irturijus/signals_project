@@ -118,12 +118,10 @@ def generate_easy(difficulty):
 
         cur_block = random.choice(list(available_blocks))
 
-        if cur_block[0] == 0:
+        if cur_block[0] in [0, 1]:
             color = 0
-        elif cur_block[0] == 3:
-            color = 1
         else:
-            color = random.randint(0, 1)
+            color = 1
 
         dot_roll = random.randint(0, 7)  # Make some blocks any direction
         direction = 8 if dot_roll == 7 else cur_block[2]
