@@ -89,9 +89,8 @@ def generate_info():
     return info
 
 
-
 def generate_easy(difficulty):
-    
+
     color_notes = []
 
     max_val = max(beats)
@@ -101,18 +100,19 @@ def generate_easy(difficulty):
     # Keeps track of last direction [True, True] = [Up(0), Right(3)]
     track_dir = {'X': True, 'Y': True}
 
-    prev_loc = set()
+    possible_blocks = {(0, 0, 6), (1, 0, 1), (2, 0, 1), (3, 0, 7),
+                       (0, 1, 2),                       (3, 1, 3),
+                       (0, 2, 4), (1, 2, 0), (2, 2, 0), (3, 2, 5)}
+
+    banned_blocks = set()
 
     for i, val in enumerate(beats):
         if not val:
             continue
 
-        cur_loc = set()
-
         second = i / samplerate
         beat = seconds_to_beat(second)
 
-        # Stack generator
         if val > (0.75-(difficulty-1)*0.01) * max_val:
             note_count = 3
         elif val > (0.5-(difficulty-1)*0.01) * max_val:
@@ -120,69 +120,60 @@ def generate_easy(difficulty):
         else:
             note_count = 1
 
-        # Direction generator, a huge mess to implement logic
-        direction = 8
-        if note_count in [2, 3]:  # Separate case for 3 notes to be only up down or any
-            if dir_status['Y']:
-                track_dir['Y'] = not track_dir['Y']
-                direction = 0 if track_dir['Y'] else 1
-                dir_status['Y'] = False
-            else:
-                direction = random.choice([0, 1, 8])
-                if direction != 8:
-                    dir_status['Y'] = True
-        else:
-            if dir_status['X']:
-                track_dir['X'] = not track_dir['X']
-                direction = 3 if track_dir['X'] else 2
-                dir_status['X'] = False
-            elif dir_status['Y']:
-                track_dir['Y'] = not track_dir['Y']
-                direction = 0 if track_dir['Y'] else 1
-                dir_status['Y'] = False
-            else:
-                if random.random() < 0.6:
-                    direction = 8
-                else:
-                    direction = random.randint(0, 7)
-                    if direction in [2, 3]:
-                        dir_status['X'] = True
-                        track_dir['X'] = (direction == 3)
-                    if direction in [0, 1]:
-                        dir_status['Y'] = True
-                        track_dir['Y'] = (direction == 0)
+        available_blocks = possible_blocks - banned_blocks
 
-        x = random.randint(0, 3)
-        if x == 0:
+        cur_block = random.choice(list(available_blocks))
+
+        if cur_block[0] == 0:
             color = 0
-        elif x == 3:
+        elif cur_block[0] == 3:
             color = 1
         else:
             color = random.randint(0, 1)
 
-        for _ in range(note_count):
-            while True:  # Generate positions that aren't same as last
-                available_y = {0, 1, 2}
+        dot_roll = random.randint(0, 7)  # Make some blocks any direction
+        direction = 8 if dot_roll == 7 else cur_block[2]
 
-                if not available_y:
-                    break
-                y = random.choice(list(available_y))
-                available_y.remove(y)
-
-                loc = (x, y)
-                if loc not in prev_loc:
-                    cur_loc.add(loc)
-                    break
-
+        if note_count == 1:
             color_notes.append({
                 'b': round(beat, 3),  # Beat
-                'x': x,  # Line Index
-                'y': y,  # Line Layer
+                'x': cur_block[0],  # Line Index
+                'y': cur_block[1],  # Line Layer
                 'a': 0,
                 'c': color,
                 'd': direction,  # Cut direction
             })
-        prev_loc = cur_loc
+
+        # Wall builder
+        wall_direction = random.choice([0, 1])
+        wall_start = random.choice([0, 2])
+
+        for i in range(0, note_count - 1):
+            if wall_start == 0:
+                color_notes.append({
+                    'b': round(beat, 3),  # Beat
+                    'x': cur_block[0],  # Line Index
+                    'y': 0 + i,  # Line Layer
+                    'a': 0,
+                    'c': color,
+                    'd': wall_direction,  # Cut direction
+                })
+            if wall_start == 2:
+                color_notes.append({
+                    'b': round(beat, 3),  # Beat
+                    'x': cur_block[0],  # Line Index
+                    'y': 2 - i,  # Line Layer
+                    'a': 0,
+                    'c': color,
+                    'd': wall_direction,  # Cut direction
+                })
+
+        # Ban blocks adjacent to this one
+        banned_blocks = set()
+
+        for block in possible_blocks:
+            if abs(block[0] - cur_block[0]) + abs(block[1] - cur_block[1]) <= 1:
+                banned_blocks.add(block)
 
     return {
         'version': '3.3.0',
@@ -244,6 +235,7 @@ def export_map():
     # expertp_data == 0
 
     print(f'Exported!')
+
 
 export_map()
 
