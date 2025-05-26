@@ -94,15 +94,17 @@ def generate_easy(difficulty):
 
     max_val = max(beats)
 
-    possible_blocks = {(0, 0, 6), (1, 0, 1), (2, 0, 1), (3, 0, 7),
+    possible_blocks = {(0, 2, 4), (1, 2, 0), (2, 2, 0), (3, 2, 5),
                        (0, 1, 2),                       (3, 1, 3),
-                       (0, 2, 4), (1, 2, 0), (2, 2, 0), (3, 2, 5)}
+                       (0, 0, 6), (1, 0, 1), (2, 0, 1), (3, 0, 7)}
 
     banned_blocks = set()
 
     for i, val in enumerate(beats):
         if not val:
             continue
+
+        cur_blocks = []
 
         second = i / samplerate
         beat = seconds_to_beat(second)
@@ -115,8 +117,8 @@ def generate_easy(difficulty):
             note_count = 1
 
         available_blocks = possible_blocks - banned_blocks
-
         cur_block = random.choice(list(available_blocks))
+        cur_blocks.append(cur_block)
 
         if cur_block[0] in [0, 1]:
             color = 0
@@ -135,37 +137,35 @@ def generate_easy(difficulty):
                 'c': color,
                 'd': direction,  # Cut direction
             })
+            cur_blocks.append((cur_block[0], cur_block[1], direction))
 
         # Wall builder
-        wall_direction = random.choice([0, 1])
-        wall_start = random.choice([0, 2])
-
-        for i in range(0, note_count - 1):
-            if wall_start == 0:
-                color_notes.append({
-                    'b': round(beat, 3),  # Beat
-                    'x': cur_block[0],  # Line Index
-                    'y': 0 + i,  # Line Layer
-                    'a': 0,
-                    'c': color,
-                    'd': wall_direction,  # Cut direction
-                })
-            if wall_start == 2:
-                color_notes.append({
-                    'b': round(beat, 3),  # Beat
-                    'x': cur_block[0],  # Line Index
-                    'y': 2 - i,  # Line Layer
-                    'a': 0,
-                    'c': color,
-                    'd': wall_direction,  # Cut direction
-                })
-
-        # Ban blocks adjacent to this one
+        banned_directions = {x[2] for x in banned_blocks}
+        possible_wall_directions = [d for d in [
+            0, 1] if d not in banned_directions]
         banned_blocks = set()
 
-        for block in possible_blocks:
-            if abs(block[0] - cur_block[0]) + abs(block[1] - cur_block[1]) <= 1:
-                banned_blocks.add(block)
+        if possible_wall_directions:
+            wall_direction = random.choice(possible_wall_directions)
+
+            if note_count > 1:
+                for i in range(0, note_count):
+                    color_notes.append({
+                        'b': round(beat, 3),  # Beat
+                        'x': cur_block[0],  # Line Index
+                        'y': 0 + i,  # Line Layer
+                        'a': 0,
+                        'c': color,
+                        'd': wall_direction,  # Cut direction
+                    })
+                    cur_blocks.append((cur_block[0], 0+i, wall_direction))
+                    banned_blocks.add((cur_block[0], 0, wall_direction))
+
+        # Ban blocks adjacent to this one
+        for cur in cur_blocks:
+            for block in possible_blocks:
+                if (abs(block[0] - cur[0]) + abs(block[1] - cur[1])) < 2:
+                    banned_blocks.add(block)
 
     return {
         'version': '3.3.0',
