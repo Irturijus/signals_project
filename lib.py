@@ -16,8 +16,8 @@ def group_beats(beat_array, grouping_samples=None):
     #
     #   grouping_samples: if provided, every beat is grouped with anything
     #                     grouping_samples samples in front of it. Othewise,
-    #                     the beat is groped with all beats in front of it until
-    #                     a zero sample (sample without a beat).
+    #                     the beat is grouped with all beats in front of it until 6
+    #                     consecutive zero samples (samples without a beat).
 
     for i in range(beat_array.shape[0]):
         if beat_array[i] > 0:
@@ -25,7 +25,7 @@ def group_beats(beat_array, grouping_samples=None):
                 j = i+grouping_samples
             else:
                 j = i
-                while j < beat_array.shape[0] and np.sum(beat_array[j:j+5]) > 0:
+                while j < beat_array.shape[0] and np.sum(beat_array[j:j+6]) > 0:
                     j += 1
                 j += 1
             sum = np.sum(beat_array[i:j])

@@ -23,11 +23,11 @@ print(
 
 nps = total_beats/duration
 
-easy_nps = 1.555
-normal_nps = 2.23
-hard_nps = 3.475
-expert_nps = 5.115
-expertplus_nps = 6.935
+easy_nps = 0.8
+normal_nps = 1.8
+hard_nps = 3
+expert_nps = 4.5
+expertplus_nps = 6
 
 easy_generator = False
 normal_generator = False
@@ -326,5 +326,3 @@ def export_map(a, b, c, d, e):
 export_map(easy_exists, normal_exists, hard_exists, expert_exists, expertplus_exists)
 
 shutil.make_archive('beatmap', 'zip', 'beatmap')
-
-shutil.rmtree('beatmap')
