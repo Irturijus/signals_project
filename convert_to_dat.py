@@ -70,8 +70,7 @@ else:
 multiplier = 0
 tolerance = 0.2
 
-while not (expertplus_generator and expert_generator and hard_generator and normal_generator and easy_generator):
-
+while multiplier < 0.3 and not (expertplus_generator and expert_generator and hard_generator and normal_generator and easy_generator):
 
     beats = np.maximum(0, beats-multiplier*np.max(beats))
 
@@ -82,29 +81,29 @@ while not (expertplus_generator and expert_generator and hard_generator and norm
     if nps > (easy_nps - tolerance) and nps < (easy_nps + tolerance) and not easy_generator:
         easy = beats
         easy_generator = True
-        print("easy defined")
+        print("easy difficulty generated")
     
     elif nps > (normal_nps - tolerance) and nps < (normal_nps + tolerance) and not normal_generator:
         normal = beats
         normal_generator = True
-        print("normal defined")
+        print("normal difficulty generated")
 
     elif nps > (hard_nps - tolerance) and nps < (hard_nps + tolerance) and not hard_generator:
         hard = beats
         hard_generator = True
-        print("hard defined")
+        print("hard difficulty generated")
 
     elif nps > (expert_nps - tolerance) and nps < (expert_nps + tolerance) and not expert_generator:
         expert = beats
         expert_generator = True
-        print("expert defined")
+        print("expert difficulty generated")
 
     elif nps > (expertplus_nps - tolerance) and nps < (expertplus_nps + tolerance) and not expertplus_generator:
         expertplus = beats
         expertplus_generator = True
-        print("expert+ defined")
+        print("expert+ difficulty generated")
 
-    multiplier += 0.0001
+    multiplier += 0.00001
 
 def seconds_to_beat(seconds):
     return (seconds / 60) * bpm
