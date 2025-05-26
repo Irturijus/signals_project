@@ -109,7 +109,7 @@ def generate_easy(difficulty):
 
         if val > (0.75-(difficulty-1)*0.01) * max_val:
             note_count = 3
-        elif val > (0.5-(difficulty-1)*0.01) * max_val:
+        elif val > (0.6-(difficulty-1)*0.01) * max_val:
             note_count = 2
         else:
             note_count = 1
