@@ -90,15 +90,9 @@ def generate_info():
 
 
 def generate_easy(difficulty):
-
     color_notes = []
 
     max_val = max(beats)
-
-    # Whether last block was a directional block
-    dir_status = {'X': False, 'Y': False}
-    # Keeps track of last direction [True, True] = [Up(0), Right(3)]
-    track_dir = {'X': True, 'Y': True}
 
     possible_blocks = {(0, 0, 6), (1, 0, 1), (2, 0, 1), (3, 0, 7),
                        (0, 1, 2),                       (3, 1, 3),
