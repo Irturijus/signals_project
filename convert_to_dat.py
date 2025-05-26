@@ -2,9 +2,7 @@ import os
 import json
 import random
 import shutil
-
-if os.path.exists('beatmap'):
-    shutil.rmtree('beatmap')
+import numpy as np
 
 with open('process_song/beats_array.json', 'r') as file:
     data = json.load(file)
@@ -17,11 +15,95 @@ name = 'Unknown Song'
 author = 'Unknown Author'
 output_folder = 'beatmap'
 
+
 duration = len(beats) / samplerate
 total_beats = sum(1 for i in beats if i > 0)
 print(
     f'Samplerate: {samplerate},\n Duration: {duration}, \n Total beats: {total_beats}, \n BPM: {bpm}')
 
+nps = total_beats/duration
+
+easy_nps = 0.8
+normal_nps = 1.8
+hard_nps = 3
+expert_nps = 4.5
+expertplus_nps = 6
+
+easy_generator = False
+normal_generator = False
+hard_generator = False
+expert_generator = False
+expertplus_generator = False
+
+if nps < expertplus_nps:
+    expertplus_generator = True
+    expertplus_exists = False
+else:
+    expertplus_exists = True
+    
+if nps < expert_nps:
+    expert_generator = True
+    expert_exists = False
+else:
+    expert_exists = True
+
+if nps < hard_nps:
+    hard_generator = True
+    hard_exists = False
+else:
+    hard_exists = True
+
+if nps < normal_nps:
+    normal_generator = True
+    normal_exists = False
+else:
+    normal_exists = True
+
+if nps < easy_nps:
+    easy_generator = True
+    easy_exists = False
+    print("Map cannot be created")
+    exit
+else:
+    easy_exists = True
+
+multiplier = 0
+tolerance = 0.2
+
+while multiplier < 0.3 and not (expertplus_generator and expert_generator and hard_generator and normal_generator and easy_generator):
+
+    beats = np.maximum(0, beats-multiplier*np.max(beats))
+
+    total_beats = sum(1 for i in beats if i > 0)
+
+    nps = total_beats/duration
+
+    if nps > (easy_nps - tolerance) and nps < (easy_nps + tolerance) and not easy_generator:
+        easy = beats
+        easy_generator = True
+        print("easy difficulty generated")
+    
+    elif nps > (normal_nps - tolerance) and nps < (normal_nps + tolerance) and not normal_generator:
+        normal = beats
+        normal_generator = True
+        print("normal difficulty generated")
+
+    elif nps > (hard_nps - tolerance) and nps < (hard_nps + tolerance) and not hard_generator:
+        hard = beats
+        hard_generator = True
+        print("hard difficulty generated")
+
+    elif nps > (expert_nps - tolerance) and nps < (expert_nps + tolerance) and not expert_generator:
+        expert = beats
+        expert_generator = True
+        print("expert difficulty generated")
+
+    elif nps > (expertplus_nps - tolerance) and nps < (expertplus_nps + tolerance) and not expertplus_generator:
+        expertplus = beats
+        expertplus_generator = True
+        print("expert+ difficulty generated")
+
+    multiplier += 0.00001
 
 def seconds_to_beat(seconds):
     return (seconds / 60) * bpm
@@ -89,7 +171,7 @@ def generate_info():
     return info
 
 
-def generate_easy(difficulty):
+def generate_easy(beats):
     color_notes = []
 
     max_val = max(beats)
@@ -109,9 +191,9 @@ def generate_easy(difficulty):
         second = i / samplerate
         beat = seconds_to_beat(second)
 
-        if val > (0.75-(difficulty-1)*0.01) * max_val:
+        if val > 0.75 * max_val:
             note_count = 3
-        elif val > (0.6-(difficulty-1)*0.01) * max_val:
+        elif val > 0.6 * max_val:
             note_count = 2
         else:
             note_count = 1
@@ -184,7 +266,7 @@ def generate_easy(difficulty):
     }
 
 
-def export_map():
+def export_map(a, b, c, d, e):
     os.makedirs(output_folder, exist_ok=True)
     src = 'process_song/' + songFilename
     dst = 'beatmap/' + songFilename
@@ -196,41 +278,50 @@ def export_map():
         json.dump(info_data, f, indent=2)
 
     # Easy.dat
-    easy_data = generate_easy(1)
-    with open(os.path.join(output_folder, 'Easy.dat'), 'w') as f:
-        json.dump(easy_data, f, indent=2)
 
-    easy_data == 0
+    if a:
 
-    # normal_data = generate_easy(3)
-    # with open(os.path.join(output_folder, 'Normal.dat'), 'w') as f:
-    #     json.dump(normal_data, f, indent=2)
+        easy_data = generate_easy(easy)
+        with open(os.path.join(output_folder, 'Easy.dat'), 'w') as f:
+            json.dump(easy_data, f, indent=2)
 
-    # normal_data == 0
+        easy_data == 0
 
-    # hard_data = generate_easy(5)
-    # with open(os.path.join(output_folder, 'Hard.dat'), 'w') as f:
-    #     json.dump(hard_data , f, indent=2)
+    if b:
 
-    # hard_data == 0
+        normal_data = generate_easy(normal)
+        with open(os.path.join(output_folder, 'Normal.dat'), 'w') as f:
+            json.dump(normal_data, f, indent=2)
 
-    # expert_data = generate_easy(7)
-    # with open(os.path.join(output_folder, 'Expert.dat'), 'w') as f:
-    #     json.dump(expert_data, f, indent=2)
+        normal_data == 0
 
-    # expert_data == 0
+    if c:
 
-    # expertp_data = generate_easy(9)
-    # with open(os.path.join(output_folder, 'Expertplus.dat'), 'w') as f:
-    #     json.dump(expertp_data, f, indent=2)
+        hard_data = generate_easy(hard)
+        with open(os.path.join(output_folder, 'Hard.dat'), 'w') as f:
+            json.dump(hard_data , f, indent=2)
 
-    # expertp_data == 0
+        hard_data == 0
+
+    if d:
+
+        expert_data = generate_easy(expert)
+        with open(os.path.join(output_folder, 'Expert.dat'), 'w') as f:
+            json.dump(expert_data, f, indent=2)
+
+        expert_data == 0
+
+    if e:
+
+        expertp_data = generate_easy(expertplus)
+        with open(os.path.join(output_folder, 'Expertplus.dat'), 'w') as f:
+            json.dump(expertp_data, f, indent=2)
+
+        expertp_data == 0
 
     print(f'Exported!')
 
 
-export_map()
+export_map(easy_exists, normal_exists, hard_exists, expert_exists, expertplus_exists)
 
 shutil.make_archive('beatmap', 'zip', 'beatmap')
-
-shutil.rmtree('beatmap')
