@@ -186,7 +186,7 @@ def find_beats_and_tempo(audio, samplerate, beat_samplerate, sufficient_strength
 
     mean_tempo = 0.5*tempo_ch1+0.5*tempo_ch2
 
-    print(f"TEMPO IS {mean_tempo:.1f}")
+    # print(f"TEMPO IS {mean_tempo:.1f}")
 
     return beats_array, mean_tempo
 
