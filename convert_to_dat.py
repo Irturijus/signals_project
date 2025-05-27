@@ -111,60 +111,75 @@ def seconds_to_beat(seconds):
 
 def generate_info():
     info = {
-        'version': '4.0.0',
-        'song': {
-            'title': name,
-            'author': author
-        },
-        'audio': {
-            'bpm': bpm,
-            'songFilename': songFilename,
-        },
+        '_version': '2.1.0',
+        '_songName': name,
+        '_songSubName': '',
+        '_songAuthorName': author,
+        '_levelAuthorName': 'Signals Project',
+        '_beatsPerMinute': bpm,
+        '_shuffle': 0,
+        '_shufflePeriod': 0.5,      
+        '_previewStartTime': 31.5,
+        '_previewDuration': 7,        
+        '_songFilename': songFilename,
         'coverImageFilename': 'cover.png',
         '_environmentName': 'DefaultEnvironment',
         '_allDirectionsEnvironmentName': 'GlassDesertEnvironment',
+        '_songTimeOffset': 0,
+        '_environmentNames': [],
+        '_colorSchemes': [],
 
-        'difficultyBeatmaps': [
+        '_difficultyBeatmapsSets': [
             {
-                'difficulty': 'Easy',
-                'difficultyRank': 1,
-                'beatmapDataFilename': 'Easy.dat',
-                'noteJumpMovementSpeed': 10,
-                'noteJumpStartBeatOffset': 0,
-                'colorSchemeId': 'Default'
-            },
-            {
-                'difficulty': 'Normal',
-                'difficultyRank': 3,
-                'beatmapDataFilename': 'Normal.dat',
-                'noteJumpMovementSpeed': 10,
-                'noteJumpStartBeatOffset': 0,
-                'colorSchemeId': 'Default'
-            },
-            {
-                'difficulty': 'Hard',
-                'difficultyRank': 5,
-                'beatmapDataFilename': 'Hard.dat',
-                'noteJumpMovementSpeed': 10,
-                'noteJumpStartBeatOffset': 0,
-                'colorSchemeId': 'Default'
-            },
-            {
-                'difficulty': 'Expert',
-                'difficultyRank': 7,
-                'beatmapDataFilename': 'Expert.dat',
-                'noteJumpMovementSpeed': 10,
-                'noteJumpStartBeatOffset': 0,
-                'colorSchemeId': 'Default'
-            },
-            {
-                'difficulty': 'Expert+',
-                'difficultyRank': 9,
-                'beatmapDataFilename': 'Expertplus.dat',
-                'noteJumpMovementSpeed': 10,
-                'noteJumpStartBeatOffset': 0,
-                'colorSchemeId': 'Default'
-            },
+                "_beatmapCharacteristicName": "Standard",
+                "_difficultyBeatmaps": [
+                    {
+                        '_difficulty': 'Easy',
+                        '_difficultyRank': 1,
+                        '_beatmapDataFilename': 'Easy.dat',
+                        '_noteJumpMovementSpeed': 10,
+                        '_noteJumpStartBeatOffset': 0,
+                        '_beatmapColorSchemeIdx': 0,
+                        '_environmentNameIdx': 0
+                    },
+                    {
+                        '_difficulty': 'Normal',
+                        '_difficultyRank': 3,
+                        '_beatmapDataFilename': 'Normal.dat',
+                        '_noteJumpMovementSpeed': 10,
+                        '_noteJumpStartBeatOffset': 0,
+                        '_beatmapColorSchemeIdx': 0,
+                        '_environmentNameIdx': 0
+                    },
+                    {
+                        '_difficulty': 'Hard',
+                        '_difficultyRank': 5,
+                        '_beatmapDataFilename': 'Hard.dat',
+                        '_noteJumpMovementSpeed': 10,
+                        '_noteJumpStartBeatOffset': 0,
+                        '_beatmapColorSchemeIdx': 0,
+                        '_environmentNameIdx': 0
+                    },
+                    {
+                        '_difficulty': 'Expert',
+                        '_difficultyRank': 7,
+                        '_beatmapDataFilename': 'Expert.dat',
+                        '_noteJumpMovementSpeed': 10,
+                        '_noteJumpStartBeatOffset': 0,
+                        '_beatmapColorSchemeIdx': 0,
+                        '_environmentNameIdx': 0
+                    },
+                    {
+                        '_difficulty': 'Expert+',
+                        '_difficultyRank': 9,
+                        '_beatmapDataFilename': 'Expertplus.dat',
+                        '_noteJumpMovementSpeed': 10,
+                        '_noteJumpStartBeatOffset': 0,
+                        '_beatmapColorSchemeIdx': 0,
+                        '_environmentNameIdx': 0
+                    },
+                ]
+            }
         ],
     }
 
