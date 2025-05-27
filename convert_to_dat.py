@@ -40,7 +40,7 @@ if nps < expertplus_nps:
     expertplus_exists = False
 else:
     expertplus_exists = True
-    
+
 if nps < expert_nps:
     expert_generator = True
     expert_exists = False
@@ -82,7 +82,7 @@ while multiplier < 0.3 and not (expertplus_generator and expert_generator and ha
         easy = beats
         easy_generator = True
         print("easy difficulty generated")
-    
+
     elif nps > (normal_nps - tolerance) and nps < (normal_nps + tolerance) and not normal_generator:
         normal = beats
         normal_generator = True
@@ -105,6 +105,7 @@ while multiplier < 0.3 and not (expertplus_generator and expert_generator and ha
 
     multiplier += 0.00001
 
+
 def seconds_to_beat(seconds):
     return (seconds / 60) * bpm
 
@@ -118,63 +119,63 @@ def generate_info():
         '_levelAuthorName': 'Signals Project',
         '_beatsPerMinute': bpm,
         '_shuffle': 0,
-        '_shufflePeriod': 0.5,      
+        '_shufflePeriod': 0.5,
         '_previewStartTime': 31.5,
-        '_previewDuration': 7,        
+        '_previewDuration': 7,
         '_songFilename': songFilename,
-        '_coverImageFilename': 'cover.png',
+        'coverImageFilename': 'cover.png',
         '_environmentName': 'DefaultEnvironment',
         '_allDirectionsEnvironmentName': 'GlassDesertEnvironment',
         '_songTimeOffset': 0,
         '_environmentNames': [],
         '_colorSchemes': [],
 
-        '_difficultyBeatmapSets': [
+        '_difficultyBeatmapsSets': [
             {
-                '_beatmapCharacteristicName': 'Standard',
-                '_difficultyBeatmaps': [
+                "_beatmapCharacteristicName": "Standard",
+                "_difficultyBeatmaps": [
                     {
                         '_difficulty': 'Easy',
                         '_difficultyRank': 1,
-                        '_beatmapFilename': 'Easy.dat',
+                        '_beatmapDataFilename': 'Easy.dat',
                         '_noteJumpMovementSpeed': 10,
-                        '_noteJumpStartBeatOffset': 0.0,
+                        '_noteJumpStartBeatOffset': 0,
                         '_beatmapColorSchemeIdx': 0,
                         '_environmentNameIdx': 0
                     },
                     {
                         '_difficulty': 'Normal',
                         '_difficultyRank': 3,
-                        '_beatmapFilename': 'Normal.dat',
+                        '_beatmapDataFilename': 'Normal.dat',
                         '_noteJumpMovementSpeed': 10,
-                        '_noteJumpStartBeatOffset': 0.0,
+                        '_noteJumpStartBeatOffset': 0,
                         '_beatmapColorSchemeIdx': 0,
                         '_environmentNameIdx': 0
                     },
                     {
                         '_difficulty': 'Hard',
                         '_difficultyRank': 5,
-                        '_beatmapFilename': 'Hard.dat',
+                        '_beatmapDataFilename': 'Hard.dat',
                         '_noteJumpMovementSpeed': 10,
-                        '_noteJumpStartBeatOffset': 0.0,
+                        '_noteJumpStartBeatOffset': 0,
                         '_beatmapColorSchemeIdx': 0,
                         '_environmentNameIdx': 0
                     },
                     {
                         '_difficulty': 'Expert',
                         '_difficultyRank': 7,
-                        '_beatmapFilename': 'Expert.dat',
+                        '_beatmapDataFilename': 'Expert.dat',
                         '_noteJumpMovementSpeed': 10,
-                        '_noteJumpStartBeatOffset': 0.0,
+                        '_noteJumpStartBeatOffset': 0,
                         '_beatmapColorSchemeIdx': 0,
                         '_environmentNameIdx': 0
                     },
                     {
-                        '_difficulty': 'ExpertPlus',
+                        '_difficulty': 'Expert+',
                         '_difficultyRank': 9,
-                        '_beatmapFilename': 'Expertplus.dat',
+                        '_beatmapDataFilename': 'Expertplus.dat',
                         '_noteJumpMovementSpeed': 10,
-                        '_noteJumpStartBeatOffset': 0.0,
+                        '_noteJumpStartBeatOffset': 0,
                         '_beatmapColorSchemeIdx': 0,
                         '_environmentNameIdx': 0
                     },
@@ -186,7 +187,7 @@ def generate_info():
     return info
 
 
-def generate_easy(beats):
+def generate_blocks(beats):
     color_notes = []
 
     max_val = max(beats)
@@ -292,11 +293,10 @@ def export_map(a, b, c, d, e):
     with open(os.path.join(output_folder, 'Info.dat'), 'w') as f:
         json.dump(info_data, f, indent=2)
 
-    # Easy.dat
-
+    # Difficulties
     if a:
 
-        easy_data = generate_easy(easy)
+        easy_data = generate_blocks(easy)
         with open(os.path.join(output_folder, 'Easy.dat'), 'w') as f:
             json.dump(easy_data, f, indent=2)
 
@@ -304,7 +304,7 @@ def export_map(a, b, c, d, e):
 
     if b:
 
-        normal_data = generate_easy(normal)
+        normal_data = generate_blocks(normal)
         with open(os.path.join(output_folder, 'Normal.dat'), 'w') as f:
             json.dump(normal_data, f, indent=2)
 
@@ -312,15 +312,15 @@ def export_map(a, b, c, d, e):
 
     if c:
 
-        hard_data = generate_easy(hard)
+        hard_data = generate_blocks(hard)
         with open(os.path.join(output_folder, 'Hard.dat'), 'w') as f:
-            json.dump(hard_data , f, indent=2)
+            json.dump(hard_data, f, indent=2)
 
         hard_data == 0
 
     if d:
 
-        expert_data = generate_easy(expert)
+        expert_data = generate_blocks(expert)
         with open(os.path.join(output_folder, 'Expert.dat'), 'w') as f:
             json.dump(expert_data, f, indent=2)
 
@@ -328,7 +328,7 @@ def export_map(a, b, c, d, e):
 
     if e:
 
-        expertp_data = generate_easy(expertplus)
+        expertp_data = generate_blocks(expertplus)
         with open(os.path.join(output_folder, 'Expertplus.dat'), 'w') as f:
             json.dump(expertp_data, f, indent=2)
 
@@ -337,6 +337,7 @@ def export_map(a, b, c, d, e):
     print(f'Exported!')
 
 
-export_map(easy_exists, normal_exists, hard_exists, expert_exists, expertplus_exists)
+export_map(easy_exists, normal_exists, hard_exists,
+           expert_exists, expertplus_exists)
 
 shutil.make_archive('beatmap', 'zip', 'beatmap')
