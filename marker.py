@@ -19,9 +19,6 @@ beat_samplerate = 100 # [samples/s]
 
 beats_array, tempo = find_beats_and_tempo(audio, samplerate, beat_samplerate) # find the beats
 
-plt.plot(beats_array)
-# plt.show()
-
 beat_data = {
     "beats": list(beats_array),
     "beat_samplerate": beat_samplerate,
