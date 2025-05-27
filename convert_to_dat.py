@@ -127,15 +127,65 @@ def generate_info():
         '_allDirectionsEnvironmentName': 'GlassDesertEnvironment',
         '_songTimeOffset': 0,
         '_environmentNames': [],
-        '_colorSchemes': [],
+        '_colorSchemes': [
+            {  
+              'useOverride': "true",
+              'colorScheme': {
+                'colorSchemeId': 'Weave',
+                'saberAColor': {
+                  'r': 0,
+                  'g': 1,
+                  'b': 1,
+                  'a': 1
+                },
+                'saberBColor': {
+                  'r': 0.01568627450980392,
+                  'g': 0.2235294117647059,
+                  'b': 0.4196078431372549,
+                  'a': 1
+                },
+                'environmentColor0': {
+                  'r': 0,
+                  'g': 1,
+                  'b': 1,
+                  'a': 1
+                },
+                'environmentColor1': {
+                  'r': 0.01568627450980392,
+                  'g': 0.2235294117647059,
+                  'b': 0.4196078431372549,
+                  'a': 1
+                },
+                'obstaclesColor': {
+                  'r': 1,
+                  'g': 0.1882353,
+                  'b': 0.1882353,
+                  'a': 1
+                },
+                'environmentColor0Boost': {
+                  'r': 0,
+                  'g': 1,
+                  'b': 1,
+                  'a': 1
+                },
+                'environmentColor1Boost': {
+                  'r': 0.01568627450980392,
+                  'g': 0.2235294117647059,
+                  'b': 0.4196078431372549,
+                  'a': 1
+                }
+              }
+            }
+        ],
+
         '_difficultyBeatmapSets': [
             {
-                "_beatmapCharacteristicName": "Standard",
-                "_difficultyBeatmaps": [
+                '_beatmapCharacteristicName': 'Standard',
+                '_difficultyBeatmaps': [
                     {
                         '_difficulty': 'Easy',
                         '_difficultyRank': 1,
-                        '_beatmapDataFilename': 'Easy.dat',
+                        '_beatmapFilename': 'Easy.dat',
                         '_noteJumpMovementSpeed': 10,
                         '_noteJumpStartBeatOffset': 0.0,
                         '_beatmapColorSchemeIdx': 0,
@@ -144,7 +194,7 @@ def generate_info():
                     {
                         '_difficulty': 'Normal',
                         '_difficultyRank': 3,
-                        '_beatmapDataFilename': 'Normal.dat',
+                        '_beatmapFilename': 'Normal.dat',
                         '_noteJumpMovementSpeed': 10,
                         '_noteJumpStartBeatOffset': 0.0,
                         '_beatmapColorSchemeIdx': 0,
@@ -153,7 +203,7 @@ def generate_info():
                     {
                         '_difficulty': 'Hard',
                         '_difficultyRank': 5,
-                        '_beatmapDataFilename': 'Hard.dat',
+                        '_beatmapFilename': 'Hard.dat',
                         '_noteJumpMovementSpeed': 10,
                         '_noteJumpStartBeatOffset': 0.0,
                         '_beatmapColorSchemeIdx': 0,
@@ -162,7 +212,7 @@ def generate_info():
                     {
                         '_difficulty': 'Expert',
                         '_difficultyRank': 7,
-                        '_beatmapDataFilename': 'Expert.dat',
+                        '_beatmapFilename': 'Expert.dat',
                         '_noteJumpMovementSpeed': 10,
                         '_noteJumpStartBeatOffset': 0.0,
                         '_beatmapColorSchemeIdx': 0,
@@ -171,7 +221,7 @@ def generate_info():
                     {
                         '_difficulty': 'ExpertPlus',
                         '_difficultyRank': 9,
-                        '_beatmapDataFilename': 'Expertplus.dat',
+                        '_beatmapFilename': 'Expertplus.dat',
                         '_noteJumpMovementSpeed': 10,
                         '_noteJumpStartBeatOffset': 0.0,
                         '_beatmapColorSchemeIdx': 0,
