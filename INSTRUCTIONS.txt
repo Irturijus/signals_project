@@ -1,0 +1,14 @@
+1. Choose a song from the folder "songs" and drag it to the "process_song" folder. Ensure there is only one audio file in "process_song" with OGG format.
+
+2. Run the "run_me.py" python file. When the program completes, a browser window should open with the online tool you need to view the result.
+If it does not open, then you have to open this online tool manually (Link: https://allpoland.github.io/ArcViewer/).
+
+3. Click the folder icon to the left of the search box and then choose the beatmap.zip file that was created by the code in this directory.
+
+4. Make sure that you can hear sound played by your computer.
+
+5. When the level loads, on the bottom left, you should see a white triangle. Click it to start viewing the generated Beat Saber level.
+
+6. Beat Saber levels often come with several difficulty options. On the bottom right of the ArcViewer window, you can choose the difficulty you want to view.
+
+Feel free to try this project out with different songs! (only .ogg format is supported)
