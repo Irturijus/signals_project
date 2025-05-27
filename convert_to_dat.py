@@ -127,56 +127,7 @@ def generate_info():
         '_allDirectionsEnvironmentName': 'GlassDesertEnvironment',
         '_songTimeOffset': 0,
         '_environmentNames': [],
-        '_colorSchemes': [
-            {  
-              'useOverride': "true",
-              'colorScheme': {
-                'colorSchemeId': 'Weave',
-                'saberAColor': {
-                  'r': 0,
-                  'g': 1,
-                  'b': 1,
-                  'a': 1
-                },
-                'saberBColor': {
-                  'r': 0.01568627450980392,
-                  'g': 0.2235294117647059,
-                  'b': 0.4196078431372549,
-                  'a': 1
-                },
-                'environmentColor0': {
-                  'r': 0,
-                  'g': 1,
-                  'b': 1,
-                  'a': 1
-                },
-                'environmentColor1': {
-                  'r': 0.01568627450980392,
-                  'g': 0.2235294117647059,
-                  'b': 0.4196078431372549,
-                  'a': 1
-                },
-                'obstaclesColor': {
-                  'r': 1,
-                  'g': 0.1882353,
-                  'b': 0.1882353,
-                  'a': 1
-                },
-                'environmentColor0Boost': {
-                  'r': 0,
-                  'g': 1,
-                  'b': 1,
-                  'a': 1
-                },
-                'environmentColor1Boost': {
-                  'r': 0.01568627450980392,
-                  'g': 0.2235294117647059,
-                  'b': 0.4196078431372549,
-                  'a': 1
-                }
-              }
-            }
-        ],
+        '_colorSchemes': [],
 
         '_difficultyBeatmapSets': [
             {
