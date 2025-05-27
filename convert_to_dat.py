@@ -231,7 +231,7 @@ def generate_easy(beats):
             wall_direction = random.choice(possible_wall_directions)
 
             if note_count > 1:
-                for i in range(0, note_count):
+                for i in range(0, min(note_count, 2)):
                     color_notes.append({
                         'b': round(beat, 3),  # Beat
                         'x': cur_block[0],  # Line Index
